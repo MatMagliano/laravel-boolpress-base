@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    private $validationPost = [
+        'title' => 'required|string',
+        'subtitle' => 'required|string',
+        'description' => 'required|string',
+        'author' => 'required|string',
+        'date' => 'required|date'
+
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +35,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -38,7 +46,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $request->validate($this->validationPost);
+        $newPost = new Post;
+        $newPost->fill($data);
+        $saved = $newPost->save();
+        dd($saved);
+        if($saved) {
+
+        }
+        
     }
 
     /**
