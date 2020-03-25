@@ -51,10 +51,11 @@ class PostController extends Controller
         $newPost = new Post;
         $newPost->fill($data);
         $saved = $newPost->save();
-        dd($saved);
-        if($saved) {
-
+        if ($saved) {
+            $post = Post::all()->last();
+            return redirect()->route('posts.show', compact('post'));
         }
+
         
     }
 
@@ -64,9 +65,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -75,9 +76,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+       if (empty($post)) {
+            abort('404');
+        }
+
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -89,7 +94,18 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        if(empty($post)) {
+            abort('404');
+        }
+
+        $data = $request->all();
+        $request->validate($this->validationPost);
+        $updated = $post->update($data);
+        if ($updated) {
+            $post = Post::find($id);
+            return redirect()->route('posts.show', compact('post'));
+        }
     }
 
     /**
@@ -98,8 +114,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $id = $post->id;
+        $deleted = $post->delete();
+        return redirect()->route('posts.index')->with('id', $id);
     }
 }
