@@ -10,13 +10,13 @@
 <body>
   <div class="photos">
   @foreach ($photos as $photo)
-    <div class="photo">
+    <div class="photo" style="text-align: center">
       <ul style="list-Style: none">
         <li><h3>Nome utente: {{$photo->user['name']}}</h3></li>
         <li><img src="{{$photo->img}}" alt=""></li>
         <li>nome foto: {{$photo->name}}</li> 
       </ul>
-      <a href=""><button type="submit">Show</button></a>
+      <a href="{{route('photos.show', $photo->id)}}"><button type="submit">Show</button></a>
     </div>   
   @endforeach
 </div>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Photo;
-use App\User;
 
 class PhotoController extends Controller
 {
@@ -47,9 +46,10 @@ class PhotoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Photo $photo)
     {
-
+        return view('photos.show', compact('photo'));
+        dd('ciao');
     }
 
     /**
